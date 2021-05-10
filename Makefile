@@ -3,7 +3,6 @@ CC  = $(CROSS_COMPILE)gcc
 CPP = $(CROSS_COMPILE)g++
 AR  = $(CROSS_COMPILE)ar
 
-ENABLE_HDMI = 0
 USE_FFMPEG  = 1
 
 COM_FLAGS = -Wall -O2 -fPIC -mcpu=cortex-a9 -mfpu=neon-fp16 -mfloat-abi=hard -mthumb-interwork -marm
@@ -12,28 +11,22 @@ CPP_FLAGS  = $(COM_FLAGS) -std=c++11
 
 INCLUDES  += -I. -I./sstar/include -I./ffmpeg-4.1.3/include/
 
-TARGET_NAME  = SsPlayer
+TARGET_NAME  = ssplayer
 
 CPP_SRCS  =  
 
-C_SRCS    =  SsPlayeEs.c sstardisp.c
+C_SRCS    =  ss_player_es.c sstar_disp.c
 			
 CPP_OBJS = $(patsubst %.cpp, %.cpp.o, $(CPP_SRCS))
 C_OBJS = $(patsubst %.c, %.c.o, $(C_SRCS))
 
 LIB_PATH  = -L. -L./sstar/lib -L./ffmpeg-4.1.3/lib
 
-ifeq ($(USE_FFMPEG), 1)
 LIB_NAME  = -lavformat -lavcodec -lavutil
-endif
 
 LIB_NAME += -lm -lmi_vdec -lmi_sys -lmi_disp -lmi_ao -lmi_common -ldl
 
-ifeq ($(ENABLE_HDMI), 1)
-LIB_PATH += -lmi_hdmi
-else
 LIB_NAME += -lmi_panel
-endif
 
 
 .PHONY: all prepare clean
@@ -67,4 +60,4 @@ $(TARGET_NAME): $(CPP_OBJS) $(CPP_SRCS) $(C_OBJS) $(C_SRCS)
 
 %.cpp.o : %.cpp
 	@echo "compile $@"
-	@$(CPP) -DENABLE_HDMI=$(ENABLE_HDMI) -DUSE_FFMPEG=$(USE_FFMPEG) $(CPP_FLAGS) $(INCLUDES) $(DEFINES) -c $< -o $@
+	@$(CPP) -DUSE_FFMPEG=$(USE_FFMPEG) $(CPP_FLAGS) $(INCLUDES) $(DEFINES) -c $< -o $@

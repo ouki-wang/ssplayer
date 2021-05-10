@@ -54,22 +54,13 @@
 #define DMA_BUF_SIZE_48K    (48000)
 
 
-#if ENABLE_HDMI
-#define AUDIO_DEV       3
-#else
 #define AUDIO_DEV       0
-#endif
 
 #define VDEC_INPUT_WIDTH     1920
 #define VDEC_INPUT_HEIGHT    1080
 
-#if ENABLE_HDMI
-    #define VDEC_OUTPUT_WIDTH     1920
-    #define VDEC_OUTPUT_HEIGHT    1080
-#else
-    #define VDEC_OUTPUT_WIDTH     1024
-    #define VDEC_OUTPUT_HEIGHT    600
-#endif
+#define VDEC_OUTPUT_WIDTH     1024
+#define VDEC_OUTPUT_HEIGHT    600
 
 typedef struct WAVE_FORMAT
 {
@@ -109,7 +100,7 @@ int sstar_vdec_init(void)
     MI_VDEC_InitParam_t stVdecInitParam;
 
     memset(&stVdecInitParam, 0, sizeof(MI_VDEC_InitParam_t));
-    stVdecInitParam.bDisableLowLatency = false; //false: 不带B帧, true: 带B帧
+    stVdecInitParam.bDisableLowLatency = true; //false: 不带B帧, true: 带B帧
     STCHECKRESULT(MI_VDEC_InitDev(&stVdecInitParam));
 
     memset(&stVdecChnAttr, 0, sizeof(MI_VDEC_ChnAttr_t));
@@ -783,13 +774,8 @@ int main (int argc, char **argv)
     }
 
     MI_DISP_PubAttr_t stDispPubAttr;
-#if ENABLE_HDMI
-    stDispPubAttr.eIntfType = E_MI_DISP_INTF_HDMI;
-    stDispPubAttr.eIntfSync = E_MI_DISP_OUTPUT_USER;
-#else
     stDispPubAttr.eIntfType = E_MI_DISP_INTF_LCD;
     stDispPubAttr.eIntfSync = E_MI_DISP_OUTPUT_USER;
-#endif
     sstar_disp_init(&stDispPubAttr);
 
     //init SDK
