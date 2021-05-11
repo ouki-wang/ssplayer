@@ -100,7 +100,7 @@ int sstar_vdec_init(void)
     MI_VDEC_InitParam_t stVdecInitParam;
 
     memset(&stVdecInitParam, 0, sizeof(MI_VDEC_InitParam_t));
-    stVdecInitParam.bDisableLowLatency = true; //false: 不带B帧, true: 带B帧
+    stVdecInitParam.bDisableLowLatency = false; //false: 不带B帧, true: 带B帧
     STCHECKRESULT(MI_VDEC_InitDev(&stVdecInitParam));
 
     memset(&stVdecChnAttr, 0, sizeof(MI_VDEC_ChnAttr_t));
