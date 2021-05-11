@@ -3,7 +3,7 @@
 #include "stdlib.h"
 
 #include "mi_sys.h"
-#include "sstardisp.h"
+#include "sstar_disp.h"
 
 #include "mi_panel_datatype.h"
 #include "mi_panel.h"
